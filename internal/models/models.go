@@ -26,6 +26,7 @@ type Post struct {
 type Message struct {
 	Id          int
 	PostId      int
+	CommentId   int
 	Author      string
 	ReactAuthor string
 	Message     string

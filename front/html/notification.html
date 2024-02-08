@@ -30,7 +30,6 @@
     {{else}}
     <a href="/notification/?newnotification" class="actions_button">Notifications</a>   
     {{end}}
-    <h1 style="color: rgb(218, 0, 0); ">This page is not ready for use yet</h1>
     {{if .Notifications}}
       {{range .Notifications}}
         {{if ne .ReactAuthor $.User.Username}}
@@ -64,7 +63,7 @@
       {{end}}
     {{end}}
 
-    <button class="close-button">Clear All</button>
+    <!-- <button class="close-button">Clear All</button> -->
   </section>
 
   <footer>

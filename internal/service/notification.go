@@ -35,12 +35,12 @@ func (m *MsgService) CreateMassage(mes models.Message, comm string) error {
 	} else if mes.Message == "cc" {
 		mes.Message = fmt.Sprintf(" %s commented on post: \"%s\". Which was created by \"%s\"", mes.ReactAuthor, comm, mes.Author)
 	}
-	exists, err := m.storage.MessageExists(mes.Author, mes.Message)
+	exists, err := m.storage.MessageExists(mes.Author, mes.Message, mes.PostId, mes.CommentId)
 	if err != nil {
 		return err
 	}
 	if exists {
-		return m.storage.UpdateMessageCreationTime(mes.Author, mes.Message, time.Now())
+		return m.storage.UpdateMessageCreationTime(mes.Author, mes.Message, time.Now(), mes.PostId, mes.CommentId)
 	} else {
 		return m.storage.CreateMassage(mes)
 	}

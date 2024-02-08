@@ -78,12 +78,13 @@ func (h *Handler) postPage(w http.ResponseWriter, r *http.Request) {
 			h.ErrorPage(w, "comment should be shorter than 300 symbols", http.StatusBadRequest)
 			return
 		}
-		if err := h.Service.CommentServiceIR.CreateComment(id, user.Username, commentText); err != nil {
+		commentid, err := h.Service.CommentServiceIR.CreateComment(id, user.Username, commentText)
+		if err != nil {
 			h.ErrorPage(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		if err = h.Service.ServiceMsgIR.CreateMassage(models.Message{
-			PostId: post.Id, ReactAuthor: user.Username, Author: post.Author, Message: "cc",
+			PostId: post.Id, CommentId: commentid, ReactAuthor: user.Username, Author: post.Author, Message: "cc",
 		}, commentText); err != nil {
 			h.ErrorPage(w, err.Error(), http.StatusBadRequest)
 			return

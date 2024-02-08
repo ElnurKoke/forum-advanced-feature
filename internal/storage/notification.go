@@ -10,8 +10,8 @@ import (
 type NotificationIR interface {
 	CreateMassage(post models.Message) error
 	GetMessagesByAuthor(author string) ([]models.Message, error)
-	MessageExists(author string, message string) (bool, error)
-	UpdateMessageCreationTime(author string, message string, createdAt time.Time) error
+	MessageExists(author string, message string, postid, commentid int) (bool, error)
+	UpdateMessageCreationTime(author string, message string, createdAt time.Time, postid, commentid int) error
 	GetMessagesByReactAuthor(rauthor string) ([]models.Message, error)
 }
 
@@ -32,8 +32,8 @@ func (ns *NotificationStorage) CreateMassage(mes models.Message) error {
 		return fmt.Errorf("Error loading Almaty location: %v", err)
 	}
 	mes.CreateAt = mes.CreateAt.In(almatyLocation)
-	query := `INSERT INTO notification(post_id, author, reactauthor, message, created_at) VALUES ($1, $2, $3, $4, $5);`
-	_, err = ns.db.Exec(query, mes.PostId, mes.Author, mes.ReactAuthor, mes.Message, mes.CreateAt)
+	query := `INSERT INTO notification(post_id, comment_id, author, reactauthor, message, created_at) VALUES ($1, $2, $3, $4, $5, $6);`
+	_, err = ns.db.Exec(query, mes.PostId, mes.CommentId, mes.Author, mes.ReactAuthor, mes.Message, mes.CreateAt)
 	if err != nil {
 		return err
 	}
@@ -51,7 +51,7 @@ func (ns *NotificationStorage) GetMessagesByAuthor(author string) ([]models.Mess
 
 	for rows.Next() {
 		var message models.Message
-		err := rows.Scan(&message.Id, &message.PostId, &message.Author, &message.ReactAuthor, &message.Message, &message.Active, &message.CreateAt)
+		err := rows.Scan(&message.Id, &message.PostId, &message.CommentId, &message.Author, &message.ReactAuthor, &message.Message, &message.Active, &message.CreateAt)
 		if err != nil {
 			return nil, fmt.Errorf("Error scanning rows: %v", err)
 		}
@@ -81,7 +81,7 @@ func (ns *NotificationStorage) GetMessagesByReactAuthor(rauthor string) ([]model
 
 	for rows.Next() {
 		var message models.Message
-		err := rows.Scan(&message.Id, &message.PostId, &message.Author, &message.ReactAuthor, &message.Message, &message.Active, &message.CreateAt)
+		err := rows.Scan(&message.Id, &message.PostId, &message.CommentId, &message.Author, &message.ReactAuthor, &message.Message, &message.Active, &message.CreateAt)
 		if err != nil {
 			return nil, fmt.Errorf("Error scanning rows: %v", err)
 		}
@@ -100,19 +100,19 @@ func (ns *NotificationStorage) GetMessagesByReactAuthor(rauthor string) ([]model
 	return messages, nil
 }
 
-func (ns *NotificationStorage) MessageExists(author string, message string) (bool, error) {
-	query := `SELECT COUNT(*) FROM notification WHERE author = $1 AND message = $2;`
+func (ns *NotificationStorage) MessageExists(author string, message string, postid, commentid int) (bool, error) {
+	query := `SELECT COUNT(*) FROM notification WHERE author = $2 AND message = $3 AND post_id = $4 AND comment_id = $5;`
 	var count int
-	err := ns.db.QueryRow(query, author, message).Scan(&count)
+	err := ns.db.QueryRow(query, author, message, postid, commentid).Scan(&count)
 	if err != nil {
 		return false, err
 	}
 	return count > 0, nil
 }
 
-func (ns *NotificationStorage) UpdateMessageCreationTime(author string, message string, createdAt time.Time) error {
-	updateQuery := `UPDATE notification SET created_at = $1 WHERE author = $2 AND message = $3;`
-	result, err := ns.db.Exec(updateQuery, createdAt, author, message)
+func (ns *NotificationStorage) UpdateMessageCreationTime(author string, message string, createdAt time.Time, postid, commentid int) error {
+	updateQuery := `UPDATE notification SET created_at = $1 WHERE author = $2 AND message = $3 AND post_id = $4 AND comment_id = $5;`
+	result, err := ns.db.Exec(updateQuery, createdAt, author, message, postid, commentid)
 	if err != nil {
 		return err
 	}

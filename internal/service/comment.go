@@ -9,7 +9,7 @@ import (
 
 type CommentServiceIR interface {
 	GetCommentsByIdPost(id int) ([]models.Comment, error)
-	CreateComment(id int, username, commentText string) error
+	CreateComment(id int, username, commentText string) (int, error)
 	DeleteComment(id int) error
 	GetCommentsByIdComment(id int) (models.Comment, error)
 	UpdateComment(comment models.Comment) error
@@ -45,10 +45,10 @@ func (c *CommentService) GetCommentsByIdPost(id int) ([]models.Comment, error) {
 	return c.storage.GetCommentsByIdPost(id)
 }
 
-func (c *CommentService) CreateComment(id int, username, commentText string) error {
+func (c *CommentService) CreateComment(id int, username, commentText string) (int, error) {
 	commentText = strings.TrimSpace(commentText)
 	if len(commentText) == 0 {
-		return fmt.Errorf("Empty comment")
+		return 0, fmt.Errorf("Empty comment")
 	}
 	return c.storage.CreateComment(id, username, commentText)
 }

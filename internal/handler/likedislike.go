@@ -57,14 +57,14 @@ func (h *Handler) emotionComment(w http.ResponseWriter, r *http.Request) {
 		err, havemo = h.Service.EmotionServiceIR.CreateOrUpdateEmotionComment(models.Like{UserID: user.Id, CommentID: commentId, Islike: 1})
 		if !havemo {
 			err = h.Service.ServiceMsgIR.CreateMassage(models.Message{
-				PostId: postId, ReactAuthor: user.Username, Author: comment.Creator, Message: "cl"}, comment.Text)
+				PostId: postId, CommentId: commentId, ReactAuthor: user.Username, Author: comment.Creator, Message: "cl"}, comment.Text)
 		}
 
 	} else if res == "dislike" {
 		err, havemo = h.Service.EmotionServiceIR.CreateOrUpdateEmotionComment(models.Like{UserID: user.Id, CommentID: commentId, Islike: 0})
 		if !havemo {
 			err = h.Service.ServiceMsgIR.CreateMassage(models.Message{
-				PostId: postId, ReactAuthor: user.Username, Author: comment.Creator, Message: "cd"}, comment.Text)
+				PostId: postId, CommentId: commentId, ReactAuthor: user.Username, Author: comment.Creator, Message: "cd"}, comment.Text)
 		}
 
 	} else {
@@ -124,14 +124,14 @@ func (h *Handler) emotionPost(w http.ResponseWriter, r *http.Request) {
 		err, havemo = h.Service.EmotionServiceIR.CreateOrUpdateEmotionPost(models.Like{UserID: user.Id, PostID: postId, Islike: 1})
 		if !havemo {
 			err = h.Service.ServiceMsgIR.CreateMassage(models.Message{
-				PostId: postId, ReactAuthor: user.Username, Author: post.Author, Message: "pl"}, post.Title)
+				PostId: postId, CommentId: 0, ReactAuthor: user.Username, Author: post.Author, Message: "pl"}, post.Title)
 		}
 
 	} else if res == "dislike" {
 		err, havemo = h.Service.EmotionServiceIR.CreateOrUpdateEmotionPost(models.Like{UserID: user.Id, PostID: postId, Islike: 0})
 		if !havemo {
 			err = h.Service.ServiceMsgIR.CreateMassage(models.Message{
-				PostId: postId, ReactAuthor: user.Username, Author: post.Author, Message: "pd"}, post.Title)
+				PostId: postId, CommentId: 0, ReactAuthor: user.Username, Author: post.Author, Message: "pd"}, post.Title)
 		}
 
 	} else {

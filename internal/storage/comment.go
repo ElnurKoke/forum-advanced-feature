@@ -8,7 +8,7 @@ import (
 )
 
 type CommentIR interface {
-	CreateComment(id int, username string, comment string) error
+	CreateComment(id int, username string, comment string) (int, error)
 	GetCommentsByIdPost(id int) ([]models.Comment, error)
 	DeleteComment(id int) error
 	GetCommentsByIdComment(id int) (models.Comment, error)
@@ -56,16 +56,25 @@ func (p *CommentStorage) DeleteComment(id int) error {
 	if err != nil {
 		return err
 	}
+	_, err = tx.Exec("DELETE FROM notification WHERE comment_id = $1;", id)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
 
-func (c *CommentStorage) CreateComment(id int, user, comment string) error {
-	_, err := c.db.Exec(`INSERT INTO comment(id_post, author, comment) VALUES (?, ?, ?)`, id, user, comment)
+func (c *CommentStorage) CreateComment(id int, user, comment string) (int, error) {
+	result, err := c.db.Exec(`INSERT INTO comment(id_post, author, comment) VALUES (?, ?, ?)`, id, user, comment)
 	if err != nil {
-		return fmt.Errorf("repo: create comment: falied %w", err)
+		return 0, fmt.Errorf("repo: create comment: falied %w", err)
 	}
-	return nil
+	insertedID, err := result.LastInsertId()
+	if err != nil {
+		return 0, fmt.Errorf("repo: get last inserted ID: %w", err)
+	}
+
+	return int(insertedID), nil
 }
 
 func (c *CommentStorage) GetCommentsByIdPost(id int) ([]models.Comment, error) {
