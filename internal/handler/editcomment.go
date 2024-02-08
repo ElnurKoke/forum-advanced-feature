@@ -29,9 +29,14 @@ func (h *Handler) commentPage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 		return
 	}
+	if !user.IsAuth {
+		h.ErrorPage(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
+		return
+	}
 	commentinfo, err := h.Service.CommentServiceIR.GetCommentsByIdComment(id)
 	if err != nil {
-		h.ErrorPage(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		h.ErrorPage(w, models.ErrCommentNotFound.Error(), http.StatusNotFound)
+		log.Println(err.Error())
 		return
 	}
 

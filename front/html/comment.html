@@ -11,10 +11,10 @@
 		{{if .IsAuth}}
 		<nav>
 			<div class="left">
-				<h1>Edit comment: {{.Text}}</h1>
+				<h1>Comment: {{.Text}}</h1>
 			</div> 
 			<div class="right">
-				<a href="/post/?id={{.PostId}}" >Back</a>
+				<a href="/post/?id={{.PostId}}" >Post</a>
 			</div>
 		</nav>
 		{{else}}
@@ -42,12 +42,13 @@
 		<div  style="margin-bottom: 20%;">
 		
 		<form method="POST" action="/comment/?id={{.Id}}">	
-			<label>{{.Creator}}:</label>
+			<label>Edit:</label>
 			<button class="setting" type="submit">
 				<img class="setting" src="../static/jpg/edit.png" alt="Edit">
 			</button>
 			<input class="comment_text" type="text"  id="text" name="text" maxlength="100" value="{{.Text}}" required />
-					
+			<p style="color: #808080;">Creator: {{.Creator}}</p>
+			<p style="color: #808080;">Likes: {{ .Likes }}, Dislikes: {{ .Dislikes }}</p>
 		</form>
 	</div>
 	</div>

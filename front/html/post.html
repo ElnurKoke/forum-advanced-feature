@@ -51,7 +51,7 @@
 			
 			<div  style="margin-bottom: 20%;">
 			
-			<form method="POST" action="/change/post/?id={{.Post.Id}}" onsubmit="return confirmChange()">
+			<form method="POST" action="/change/post/?id={{.Post.Id}}" onsubmit="return confirmChange() " id="myForm">
 				<button class="setting" type="submit">
 					<img class="setting" src="../static/jpg/edit.png" alt="Edit" title="save edit" >
 				</button>
@@ -64,7 +64,7 @@
 				<label>Category:</label>
 				<div class="categories-container">
 				{{ range $.AllCategory }}
-				<h3><input type="checkbox" name="category" value="{{ .Name }}" checked> {{ .Name }}</h3>
+				<h3><input type="checkbox" name="category" value="{{ .Name }}"> {{ .Name }}</h3>
 				{{ end }}
 			    </div>
 
@@ -175,7 +175,20 @@
 		function confirmChange() {
         	return confirm("Are you really going to change this creation?");
         }
-
+		document.getElementById('myForm').addEventListener('submit', function(event) {
+        
+		var checkboxes = document.querySelectorAll('input[type="checkbox"][name="category"]');
+        var isChecked = false;
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.checked) {
+                isChecked = true;
+            }
+        });
+        if (!isChecked) {
+            alert('Please select at least one checkbox.');
+            event.preventDefault();
+        }
+    });
 
 	</script>
 	

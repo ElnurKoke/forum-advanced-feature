@@ -41,6 +41,7 @@ func (h *Handler) homePage(w http.ResponseWriter, r *http.Request) {
 		category := r.URL.Query().Get("category")
 		if !inSlice(category, categories) {
 			h.ErrorPage(w, "Not exist page", http.StatusBadRequest)
+			return
 		}
 		posts, err = h.Service.ServicePostIR.GetAllPostsByCategories(category)
 		if err != nil {
@@ -63,7 +64,6 @@ func (h *Handler) homePage(w http.ResponseWriter, r *http.Request) {
 		user,
 		posts,
 		categories,
-		nil,
 	}
 	if err := h.Temp.ExecuteTemplate(w, "homepage.html", info); err != nil {
 		log.Println(err.Error())

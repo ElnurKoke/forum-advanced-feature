@@ -38,6 +38,10 @@ func (h *Handler) emotionComment(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 		return
 	}
+	if !user.IsAuth {
+		h.ErrorPage(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
+		return
+	}
 	if err := r.ParseForm(); err != nil {
 		log.Println(err.Error())
 		h.ErrorPage(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)

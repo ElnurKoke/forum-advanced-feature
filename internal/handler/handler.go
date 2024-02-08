@@ -41,7 +41,7 @@ func (h *Handler) InitRoutes() {
 	h.Mux.HandleFunc("/comment/", h.middleWareGetUser(h.commentPage))
 	h.Mux.HandleFunc("/change/post/", h.middleWareGetUser(h.changePost))
 
-	h.Mux.HandleFunc("/notification", h.middleWareGetUser(h.notification))
+	h.Mux.HandleFunc("/notification/", h.middleWareGetUser(h.notification))
 
 	h.Mux.HandleFunc("/logout", h.logOut)
 	fileServer := http.FileServer(neuteredFileSystem{http.Dir("./front/static/")})

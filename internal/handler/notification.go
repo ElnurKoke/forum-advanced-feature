@@ -8,7 +8,7 @@ import (
 )
 
 func (h *Handler) notification(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/notification" {
+	if r.URL.Path != "/notification/" {
 		h.ErrorPage(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}
@@ -39,12 +39,27 @@ func (h *Handler) notification(w http.ResponseWriter, r *http.Request) {
 		log.Println(err.Error())
 		h.ErrorPage(w, err.Error(), http.StatusInternalServerError)
 	}
-
-	messages := models.InfoMsg{
-		User:          user,
-		Notifications: msgs,
-		Actions:       msgsmy,
+	var messages models.InfoMsg
+	if r.URL.Query().Has("myactions") {
+		messages = models.InfoMsg{
+			User:          user,
+			Notifications: nil,
+			Actions:       msgsmy,
+		}
+	} else if r.URL.Query().Has("newnotification") {
+		messages = models.InfoMsg{
+			User:          user,
+			Notifications: msgs,
+			Actions:       nil,
+		}
+	} else {
+		messages = models.InfoMsg{
+			User:          user,
+			Notifications: msgs,
+			Actions:       msgsmy,
+		}
 	}
+
 	switch r.Method {
 	case http.MethodPost:
 		// err := r.ParseForm()

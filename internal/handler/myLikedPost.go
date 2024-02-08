@@ -35,7 +35,6 @@ func (h *Handler) myLikedPost(w http.ResponseWriter, r *http.Request) {
 		user,
 		posts,
 		nil,
-		nil,
 	}
 	if err := h.Temp.ExecuteTemplate(w, "myLikedPost.html", info); err != nil {
 		log.Println(err.Error())

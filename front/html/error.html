@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../static/error.css">
 </head>
 <body>
-  <div class="error">
+  <button id="backButton" class="error_link">
     <div class="error_oops">
       <p>Ooops, something went wrong</p>
     </div>
@@ -19,9 +19,12 @@
     <div class="error_text">
       {{.Message}}
     </div>
-    <div class="error_link">
-      <a href="/">Go Home</a>
-    </div>
-  </div>
+      tap the screen to go back
+</button>
+  <script>
+    document.getElementById("backButton").addEventListener("click", function() {
+            window.history.back();
+        });
+  </script>
 </body>
 </html>

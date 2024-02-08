@@ -35,6 +35,16 @@ body {
     padding-right: 20px;
     
   }
+
+  .Teanav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    padding-right: 20px;
+    
+  }
+
   nav a {
     display: inline-block;
     position: relative;
@@ -50,6 +60,39 @@ body {
   nav a:hover {
     color: rgb(68, 217, 236);
   }
+
+  section a {
+    display: inline-block;
+    position: relative;
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    font-family: "Motiva Sans", "Twemoji", "Noto Sans", Helvetica, sans-serif;
+    font-weight: 500;
+    color: white; 
+    margin: 0 10px; 
+  }
+
+  section a:hover {
+    color: rgb(0, 0, 0);
+  }
+
+  .actions_button {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #58585c;
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.actions_button:hover {
+    background-color: #414142;
+    transform: scale(1.1);
+}
   
   footer {
     position: fixed;
@@ -88,10 +131,10 @@ body {
     padding: 20px;
     text-align: center;
     margin-bottom: 60px;
+
 }
 
 .container {
-  background: url('jpg/02smile.png') no-repeat center bottom fixed; 
   max-width: 600px;
   margin: 2px auto;
   background-color: hsl(240, 4%, 21%);
@@ -106,7 +149,11 @@ body {
 }
 
 .container:hover {
-transform: scale(1.1);
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+  color: hsl(240, 4%, 21%);
+  transform: scale(1.05);
+  opacity: 0.8;
 }
 
 .cont{
@@ -130,7 +177,7 @@ transform: scale(1.1);
   .notification p {
     color: #ffffff;
     margin: 10px 0;
-    font-size: 14px;
+    font-size: 18px;
     opacity: 0.8;
   }
 
@@ -145,7 +192,7 @@ transform: scale(1.1);
   }
   .close-button:hover {
     background-color: #414142;
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 
 nav a span{

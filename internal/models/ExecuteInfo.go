@@ -9,9 +9,8 @@ type Info struct {
 
 type InfoPosts struct {
 	User
-	Posts       []Post
-	Category    []Category
-	AllCategory []Category
+	Posts    []Post
+	Category []Category
 }
 
 type InfoMsg struct {
